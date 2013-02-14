@@ -1,6 +1,6 @@
 var Board;
-var xsize = 10;
-var ysize = 10;
+var xsize = 20;
+var ysize = 20;
 
 var dead = 0;
 var alive = 1;
@@ -129,7 +129,7 @@ function DrawBoard(BoardO)
 function Main()
 {
     // *** Change this variable to choose a different baord setup from below
-    var BoardSetup = "blinker";
+    var BoardSetup = "flower";
     
     var Board = new Array(xsize);
     for(var x = 0; x < xsize; ++x)
@@ -182,7 +182,6 @@ function Main()
 
 
 function click_next() {
-    debugger;
     NextStep(BoardO);
     DrawBoard(BoardO)
 }
