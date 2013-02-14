@@ -62,12 +62,14 @@ function Neighbors(BoardO, x, y)
 {
     var n = 0
     var ax, ay;
-    for(var dx=-1;dx < 1; ++dx) {
-	for(var dy=-1;dy < 1; ++dy) {
+    for(var dx=-1;dx <= 1; ++dx) {
+	for(var dy=-1;dy <= 1; ++dy) {
+            if (dy == 0 && dx == 0) { continue; }
 	    ax = x+dx;
     	    ay = y+dy;
-            console.log('neighbor',ax,ay);
-    	    if(BoardO.get(ax,ay)==alive) ++n;
+            var val = BoardO.get(ax,ay);
+            console.log('checked at',ax,ay,'val is',val);
+    	    if(val==alive) ++n;
         }
     }
     return n;
@@ -90,6 +92,7 @@ function NextStep(BoardO)
     for(var x = 0; x <= xsize; ++x) {
 	for(var y = 0; y <= ysize; ++y) {
 	    n = Neighbors(BoardO,x,y);
+            console.log('neighbors at',x,y,n);
 	    if(n=3) MakeLive(BoardO,x,y);
 	    if((n<2)||(n>3)) Kill(BoardO,x,y);
 	}
@@ -101,8 +104,9 @@ function DrawBoard(BoardO)
     var Text = "";
     for(var y = 0; y < ysize; ++y)
     {
-	for(var x = 0; x < xsize; ++x)
+	for(var x = 0; x < xsize; ++x) {
 	    Text += BoardO.get(x,y)==alive ? "o":"_";
+        }
 	Text += "<br/>";
     }
     document.getElementById("board").innerHTML = Text;
