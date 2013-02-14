@@ -19,7 +19,7 @@ BoardObj.prototype = {
         return BoardGet(this.Board, x, y)
     },
     set: function(x, y, val) {
-        var coords = NormCoord(this.board);
+        var coords = NormCoord(this.Board, x, y);
         this.Board[coords[0]][coords[1]] = val;
     }
 }
@@ -34,6 +34,10 @@ function BoardGet(Board, x, y) {
 
 function NormCoord(Board, x, y) {
     // returns normalized coordinates
+
+    assert(x !== undefined);
+    assert(y !== undefined);
+
     if (x >= xsize || x < 0) {
         x = x % xsize;
         if (x < 0) {
@@ -57,12 +61,14 @@ function NormCoord(Board, x, y) {
 function Neighbors(BoardO, x, y)
 {
     var n = 0
-    for(var dx=-1;dx < 1; ++dx)
-	for(var dy=-1;dy < 1; ++dy)
-    {
-	var ax = x+dx;
-    	var ay = y+dy;
-    	if(BoardO.get(ax,ay)==alive) ++n;
+    var ax, ay;
+    for(var dx=-1;dx < 1; ++dx) {
+	for(var dy=-1;dy < 1; ++dy) {
+	    ax = x+dx;
+    	    ay = y+dy;
+            console.log('neighbor',ax,ay);
+    	    if(BoardO.get(ax,ay)==alive) ++n;
+        }
     }
     return n;
 }
@@ -81,10 +87,8 @@ function MakeLive(BoardO,x,y)
 
 function NextStep(BoardO)
 {
-    for(var x = 0; x <= xsize; ++x)
-    {
-	for(var y = 0; y <= ysize; ++x)
-	{
+    for(var x = 0; x <= xsize; ++x) {
+	for(var y = 0; y <= ysize; ++y) {
 	    n = Neighbors(BoardO,x,y);
 	    if(n=3) MakeLive(BoardO,x,y);
 	    if((n<2)||(n>3)) Kill(BoardO,x,y);
@@ -154,5 +158,13 @@ function Main()
     }
 
     var BoardO = new BoardObj(Board);
+    window.BoardO = BoardO
     DrawBoard(BoardO);
+}
+
+
+function click_next() {
+    debugger;
+    NextStep(BoardO);
+    DrawBoard(BoardO)
 }
