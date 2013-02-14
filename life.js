@@ -89,13 +89,27 @@ function MakeLive(BoardO,x,y)
 
 function NextStep(BoardO)
 {
-    for(var x = 0; x <= xsize; ++x) {
-	for(var y = 0; y <= ysize; ++y) {
+    var tolive = [];
+    var tokill = [];
+    for(var x = 0; x < xsize; ++x) {
+	for(var y = 0; y < ysize; ++y) {
 	    n = Neighbors(BoardO,x,y);
             console.log('neighbors at',x,y,n);
-	    if(n=3) MakeLive(BoardO,x,y);
-	    if((n<2)||(n>3)) Kill(BoardO,x,y);
+            // mark as to set alive
+	    if(n==3) tolive.push([x,y]);
+	    if((n<2)||(n>3)) tokill.push([x,y]);
 	}
+    }
+    console.log('nextstep - tolive',tolive,'todie',tokill);
+    for (var i=0; i<tolive.length; i++) {
+        var x = tolive[i][0];
+        var y = tolive[i][1];
+        MakeLive(BoardO,x,y);
+    }
+    for (var i=0; i<tokill.length; i++) {
+        var x = tokill[i][0];
+        var y = tokill[i][1];
+        Kill(BoardO,x,y);
     }
 }
 
